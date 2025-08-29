@@ -1,95 +1,68 @@
+// app/page.tsx
 import Image from "next/image";
-import styles from "./page.module.css";
 
-export default function Home() {
+// 1. Definisikan tipe data untuk objek gambar
+interface ImageData {
+  id: string;
+  url: string;
+  title: string;
+  description: string;
+}
+
+async function getImages(): Promise<ImageData[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/images`, {
+    cache: "no-store",
+  });
+
+  // Periksa apakah respons berhasil (status 200-299)
+  if (!res.ok) {
+    // Melempar error untuk ditangkap oleh try-catch di Page()
+    throw new Error("Failed to fetch images");
+  }
+
+  // Mengembalikan data JSON yang sudah diparse
+  return res.json();
+}
+
+export default async function Page() {
+  // 2. Gunakan blok try-catch untuk penanganan error
+  let images: ImageData[] = [];
+  try {
+    images = await getImages();
+  } catch (error) {
+    console.error("Error fetching images:", error);
+    // Di sini Anda bisa menampilkan pesan error ke pengguna
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-red-500 font-bold">
+          Failed to load gallery. Please try again later.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Gallery</h1>
+      {images.length === 0 ? (
+        <p className="text-center text-gray-500">No images to display.</p>
+      ) : (
+        <div className="grid grid-cols-2 gap-4">
+          {images.map((img) => (
+            <div key={img.id} className="bg-white p-2 rounded shadow">
+              <Image
+                src={img.url}
+                alt={img.title}
+                className="w-full h-48 object-cover rounded"
+                width={500} // Tambahkan properti width dan height
+                height={300} // untuk optimasi gambar Next.js
+              />
+              <h3 className="font-semibold mt-2">{img.title}</h3>
+              <p className="text-sm text-gray-600">{img.description}</p>
+            </div>
+          ))}
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )}
     </div>
   );
 }
