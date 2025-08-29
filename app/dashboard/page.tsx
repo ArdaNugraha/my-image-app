@@ -1,5 +1,5 @@
-// app/dashboard/page.tsx
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 

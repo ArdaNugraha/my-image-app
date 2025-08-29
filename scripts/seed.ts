@@ -1,12 +1,9 @@
-// scripts/seed.ts
 import bcrypt from "bcryptjs";
-// import { db } from "../lib/db";
 import { db } from "@/lib/src";
-// import { users, categories } from "../lib/schema";
 import { users, categories } from "@/lib/src/db/schema";
 
 async function main() {
-  const pwd = "admin123"; // change this after install!
+  const pwd = "admin123";
   const hash = bcrypt.hashSync(pwd, 10);
   await db.insert(users).values({
     email: "admin@example.com",

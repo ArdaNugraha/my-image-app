@@ -1,4 +1,3 @@
-// app/api/images/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/src";
 import { images } from "@/lib/src/db/schema";

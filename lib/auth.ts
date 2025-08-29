@@ -1,11 +1,9 @@
-// lib/auth.ts
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth, { AuthOptions, User } from "next-auth";
-import { db } from "./src"; // Sesuaikan path jika perlu
+import { db } from "./src";
 import { users } from "./src/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
-import { JWT } from "next-auth/jwt";
 
 export const authOptions: AuthOptions = {
   providers: [

@@ -1,7 +1,5 @@
-// app/page.tsx
 import Image from "next/image";
 
-// 1. Definisikan tipe data untuk objek gambar
 interface ImageData {
   id: string;
   url: string;
@@ -14,24 +12,20 @@ async function getImages(): Promise<ImageData[]> {
     cache: "no-store",
   });
 
-  // Periksa apakah respons berhasil (status 200-299)
   if (!res.ok) {
-    // Melempar error untuk ditangkap oleh try-catch di Page()
     throw new Error("Failed to fetch images");
   }
 
-  // Mengembalikan data JSON yang sudah diparse
   return res.json();
 }
 
 export default async function Page() {
-  // 2. Gunakan blok try-catch untuk penanganan error
   let images: ImageData[] = [];
   try {
     images = await getImages();
   } catch (error) {
     console.error("Error fetching images:", error);
-    // Di sini Anda bisa menampilkan pesan error ke pengguna
+
     return (
       <div className="flex justify-center items-center h-screen">
         <p className="text-red-500 font-bold">
@@ -54,8 +48,8 @@ export default async function Page() {
                 src={img.url}
                 alt={img.title}
                 className="w-full h-48 object-cover rounded"
-                width={500} // Tambahkan properti width dan height
-                height={300} // untuk optimasi gambar Next.js
+                width={500}
+                height={300}
               />
               <h3 className="font-semibold mt-2">{img.title}</h3>
               <p className="text-sm text-gray-600">{img.description}</p>

@@ -1,4 +1,3 @@
-// lib/db.ts
 import { Pool } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "@/lib/src/db/schema";

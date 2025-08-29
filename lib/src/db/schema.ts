@@ -1,4 +1,3 @@
-// lib/schema.ts
 import {
   pgTable,
   serial,

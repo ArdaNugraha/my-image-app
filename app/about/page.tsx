@@ -3,7 +3,8 @@ export default function About() {
     <div>
       <h1 className="text-2xl font-bold">About</h1>
       <p className="mt-2">
-        This is a small demo app with Next.js, Drizzle, Neon, NextAuth, Zod.
+        Website Gallery ini dibuat menggunakan Next.js, Drizzle, Neon, NextAuth,
+        Zod.
       </p>
     </div>
   );
